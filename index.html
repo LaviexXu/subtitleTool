@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta charset="UTF-8">
+    <title>subtitleMakingTool</title>
+     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+     <script type="text/javascript" src="clickBind.js"></script>
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+     <script type="text/javascript" src="subtitleViewModel.js"></script>
+     <script type="text/javascript" src="http://cdn.jsdelivr.net/g/filesaver.js"></script>
+     <script type="text/javascript" src="timeStringConvert.js"></script>
+    <style>
+       .videoDiv{
+          float:left;
+          margin: 10px;
+          margin-left: 5%;
+
+       }
+       .subtitleDiv{
+          margin: 10px;
+          height: 100%;
+          overflow: auto;
+       }
+       .subtitleInput{
+          min-width: 90%;
+          font-size: large;
+          font-family: fantasy;
+          height: 300px;
+          margin-top: 40px;
+       }
+       .preview{
+           position: absolute;
+           top: 450px;
+           left: 150px;
+           max-width: 640px;
+           background-color: white;
+           color: black;
+           list-style-type: none;
+           padding:0;
+       }
+        form{
+            margin: 5px;
+        }
+        tr{
+            cursor: pointer;
+        }
+
+    </style>
+</head>
+<body >
+
+<div class="videoDiv">
+   <video id="video" src="/Users/Carlos/Downloads/Downloaded/[Thz.la]060317_01-10mu-1080p/[Thz.la]060317_01-10mu-1080p.mp4"
+          controls="controls" width="720" height="540" data-bind="event:{timeupdate: subtitlePreview,seeking: displaySubtitleNearby}">
+   </video><br/>
+    <ul class="preview" data-bind="foreach:subtitlePrev">
+        <li data-bind="text: content"></li>
+    </ul>
+   <form>
+      <input type="file" accept=".mp4,.ogg" id="inputSrc"/>
+      <button type="button" id="uploadVideo">upload</button>
+   </form>
+    <p>当前字幕：<span>id:</span>
+        <span id="currentSubtitleId">未选择</span>
+        <span id="currentSubtitle"></span></p>
+    <form>
+        <span>起始点：</span>
+        <span id="startTime" ></span>
+        <button type="button" id="subtitleStartButton">选择字幕开始时间</button>
+        <span>结束时间：</span>
+        <span id="endTime" ></span>
+        <button type="button" id="subtitleEndButton">选择字幕结束时间</button><br/>
+        <select id="setTimeType">
+            <option value="both">设置起始和结束时间</option>
+            <option value="startTimeOnly">只设置起始时间</option>
+            <option value="endTimeOnly">只设结束始时间</option>
+        </select>
+        <button type="button" data-bind="click: setSubtitleTime">设置时间</button>
+    </form>
+    <h4>当前时间附近字幕</h4>
+    <ul data-bind="foreach:subtitleNearby">
+        <li data-bind="text: content"></li>
+    </ul>
+
+</div>
+<div class="subtitleDiv">
+  <textarea id="subtitleTextArea" class="subtitleInput">
+     please enter subtitle
+  </textarea>
+    <form>
+        <input type="file" accept=".txt,.srt" id="inputText"/>
+        <button type="button" id="uploadSubtitle" data-bind="click:uploadSubtitle">上传字幕</button>
+        <button type="button" data-bind="click: srtOutput">导出srt</button>
+    </form>
+</div>
+
+<div>
+    <form>
+        <select id="filterType">
+            <option value="id">id</option>
+            <option value="time">time</option>
+            <option value="content">content</option>
+        </select>
+        <input style="width: 200px" id="filterInput" type="text" placeholder="请输入需要搜索的内容（id/时间／内容）"/>
+        <button type="button" onclick="searchFilter()">搜索</button>
+    </form>
+    <table id="uploadedSubtitle">
+        <thead><tr>
+            <th>id</th><th>字幕内容</th><th>起始时间</th><th>结束时间</th>
+        </tr></thead>
+        <tbody data-bind="foreach:subtitles">
+            <tr class="subtitleInfo">
+                <td class="id" data-bind="text: id"></td>
+                <td class="content" data-bind="text: content,click: $root.selectSubtitle" ></td>
+                <td class="startTime" data-bind="text: startTime"></td>
+                <td class="endTime" data-bind="text: endTime"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
