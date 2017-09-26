@@ -51,12 +51,14 @@
 
 <div class="videoDiv">
    <video id="video" src="/Users/Carlos/Downloads/Downloaded/[Thz.la]060317_01-10mu-1080p/[Thz.la]060317_01-10mu-1080p.mp4"
-          controls="controls" width="720" height="540" data-bind="event:{timeupdate: subtitlePreview,seeking: displaySubtitleNearby}">
+          width="720" height="540" data-bind="event:{timeupdate: subtitlePreview,seeking: displaySubtitleNearby}">
    </video><br/>
+
     <ul class="preview" data-bind="foreach:subtitlePrev">
         <li data-bind="text: content"></li>
     </ul>
    <form>
+       <input type="range" />
       <input type="file" accept=".mp4,.ogg" id="inputSrc"/>
       <button type="button" id="uploadVideo">upload</button>
    </form>
@@ -83,18 +85,9 @@
     </ul>
 
 </div>
-<div class="subtitleDiv">
-  <textarea id="subtitleTextArea" class="subtitleInput">
-     please enter subtitle
-  </textarea>
-    <form>
-        <input type="file" accept=".txt,.srt" id="inputText"/>
-        <button type="button" id="uploadSubtitle" data-bind="click:uploadSubtitle">上传字幕</button>
-        <button type="button" data-bind="click: srtOutput">导出srt</button>
-    </form>
-</div>
 
-<div>
+
+<div class="subtitleDiv">
     <form>
         <select id="filterType">
             <option value="id">id</option>
@@ -117,6 +110,21 @@
             </tr>
         </tbody>
     </table>
+</div>
+
+<div >
+  <textarea id="subtitleTextArea" class="subtitleInput">
+     please enter subtitle
+  </textarea>
+    <form>
+        <input type="file" accept=".txt,.srt" id="inputText"/>
+        <select id="inputFormat">
+            <option value="txt">文本上传</option>
+            <option value="srt">srt上传</option>
+        </select>
+        <button type="button" id="uploadSubtitle" data-bind="click:uploadSubtitle">上传字幕</button>
+        <button type="button" data-bind="click: srtOutput">导出srt</button>
+    </form>
 </div>
 
 </body>

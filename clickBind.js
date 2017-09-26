@@ -62,6 +62,30 @@ function initClickBind() {
 
     $(document).keydown(function (event) {
         //按键实现字幕坑位
+        //press space to pause or play the video
+        var video=document.getElementById("video");
+        if(video.src=="")
+            return;
+        if(event.which==32){
+            if(video.paused){
+                video.play();
+            }
+            else
+                video.pause();
+        }
+        else if(event.which==37){   //fast step back 3 seconds
+            if(video.currentTime>=3)
+                video.currentTime-=3;
+            else
+                video.currentTime=0;
+        }
+        else if(event.which==39){
+            if(video.duration-video.currentTime>=3){
+                video.currentTime+=3;
+            }
+            else
+                video.currentTime=video.duration;
+        }
     });
     ko.applyBindings(new subtitleUploadViewModel());
 }
